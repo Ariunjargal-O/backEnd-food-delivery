@@ -1,11 +1,41 @@
 import express from "express";
-const app = express();
-const port = 3000;
+import mongoose from "mongoose";
 
-app.get("/", (req, res) => {
-  res.json("Hello World!");
+
+
+
+const users = [{
+  name:"buuz",
+  price:2000,
+  id:1
+},
+{
+  name:"huushur",
+  price:2000,
+  id:2
+}
+]
+
+const app: Application = express();
+const port = 3000;
+app.use(express.json())
+
+
+
+app.get("/users", (_req:Request, res:Response) => {
+  res.json({users.name});
 });
 
-app.listen(port, () => {
+app.geet("/", )
+
+app.listen(port, async () => {
+  const connectDb = async() => {
+try{
+  await mongoose.connect("");
+console.log("Database connection sucsess")
+}catch(error){
+  console.log(error)
+}
+  }
   return console.log(`Express is listening at http://localhost:${port}`);
 });
