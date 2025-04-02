@@ -1,53 +1,24 @@
-import express, { Request, Response } from "express";
-import { Food } from "./schema/Food";
+import express from "express";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
-import { FoodCategory } from "./schema/FoodCategory";
-import { User } from "./schema/User";
+import foodRouter from "./routes/Food";
+import foodCategoryRouter from "./routes/Foodcategory";
+import foodOrderRouter from "./routes/FoodOrder";
+import userRooter from "./routes/User";
+
+dotenv.config();
 
 const app = express();
 const port = 8000;
-
 app.use(express.json());
 
-app.get("/", (_req, res) => {
-  res.json("Hello World!");
-});
-
-app.post("/food", async (req, res) => {
-  //   console.log(req.body);
-  const created = await Food.create(req.body);
-  res.json({ success: true, food: created });
-});
-
-app.get("/food", async (req, res) => {
-  const allFood = await Food.find();
-  res.json(allFood);
-});
-
-app.get("/food/:id", async (req: Request, res: Response) => {
-    const {id} = req.params
-  const oneFood = await Food.findById(id)
-try{res.json(oneFood);}
-catch(error){
-    res.status(200).json({msj:"nouuu"})
-}
-});
-
-app.delete("/food")
+app.use("/food", foodRouter);
+app.use("/food-category", foodCategoryRouter);
+app.use("/food-order", foodOrderRouter);
+app.use("/user", userRooter);
+// app.use("/food", foodRouterDeleteId);
 
 
-
-
-
-app.post("/food-category", async (req, res) => {
-  const createdFCategory = await FoodCategory.create(req.body);
-  res.json({ success: true, foodcategory: createdFCategory });
-});
-
-app.post("/user", async (req, res) => {
-  const createdUser = await User.create(req.body);
-  res.json({ success: true, createdUser: createdUser });
-});
 
 const connection = async () => {
   await mongoose.connect(
@@ -56,6 +27,7 @@ const connection = async () => {
   console.log("Datebase connected");
 };
 
+const MONGODB_URI = process.env.MONGODB_URI;
 app.listen(port, async () => {
   await connection();
   return console.log(`Express is listening at http://localhost:${port}`);

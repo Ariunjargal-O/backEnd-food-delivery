@@ -1,9 +1,17 @@
 import mongoose from "mongoose";
 
+const FoodOrderSchema = new mongoose.Schema(
+  {
+    totalprice: { type: Number, required: true },
+    user: { type: String, required: true },
+    totalPrice: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
+export const FoodOrder = mongoose.model("food-order", FoodOrderSchema);
 
-
-const FoodOrder = new mongoose.Schema({
-totalprice:Number,
-
-})
+// foodOrderItems:FoodOrderItem[],
+// status:FoodOrderStatusEnum
