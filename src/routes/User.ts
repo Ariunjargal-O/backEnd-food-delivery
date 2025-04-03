@@ -10,7 +10,7 @@ const userRooter = express.Router();
 userRooter
   .post("/", createFoodOrder)
   .get("/", getAllFoodOrder)
-  .get("/", getIdFoodOrder)
-  .patch("/", patchIdFoodOrder);
+  .get("/:id", getIdFoodOrder)
+  .patch("/:id", patchIdFoodOrder);
 
 export default userRooter;

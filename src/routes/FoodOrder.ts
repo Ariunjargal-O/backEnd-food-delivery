@@ -10,7 +10,7 @@ const foodOrderRouter = express.Router();
 foodOrderRouter
   .post("/", createFoodOrder)
   .get("/", getAllFoodOrder)
-  .get("/", getIdFoodOrder)
-  .patch("/", patchIdFoodOrder);
+  .get("/:id", getIdFoodOrder)
+  .patch("/:id", patchIdFoodOrder);
 
 export default foodOrderRouter;

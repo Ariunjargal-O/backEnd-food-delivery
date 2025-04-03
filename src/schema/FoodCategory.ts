@@ -10,4 +10,4 @@ const FoodCategorySchema = new mongoose.Schema(
   }
 );
 
-export const FoodCategory = mongoose.model("food-category", FoodCategorySchema);
+export const FoodCategory = mongoose.model("food-categories", FoodCategorySchema);

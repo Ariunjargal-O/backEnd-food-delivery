@@ -12,17 +12,17 @@ const app = express();
 const port = 8000;
 app.use(express.json());
 
-app.use("/food", foodRouter);
-app.use("/food-category", foodCategoryRouter);
-app.use("/food-order", foodOrderRouter);
-app.use("/user", userRooter);
+app.use("/foods", foodRouter);
+app.use("/food-categories", foodCategoryRouter);
+app.use("/food-orders", foodOrderRouter);
+app.use("/users", userRooter);
 // app.use("/food", foodRouterDeleteId);
 
 
 
 const connection = async () => {
   await mongoose.connect(
-    ""
+    "mongodb+srv://ariunjargal-o:Ariuka%4098@food-delivery.zobrxc8.mongodb.net/?retryWrites=true&w=majority&appName=Food-delivery"
   );
   console.log("Datebase connected");
 };

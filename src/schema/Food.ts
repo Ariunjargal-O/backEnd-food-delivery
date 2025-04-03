@@ -6,10 +6,10 @@ const FoodSchema = new mongoose.Schema(
     foodName: {type: String,required: true },
     price: {type: Number, required: true},
     image: {type: String, required:true},
-    ingredients: {type: String, requied:true},
+    ingredients: [{type: String, requied:true}],
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "FoodCategory", // href-iig bichih endpoint ni
+      ref: "FoodCategory", // schema-iin model name
       required: true, // zaaval bugluh ystoi gsn ug.
     },
   },

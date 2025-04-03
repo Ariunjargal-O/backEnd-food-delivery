@@ -6,8 +6,8 @@ const foodRouter = express.Router();
 foodRouter
   .post("/", createFood)
   .get("/", getAllFood)
-  .get("/", getIdFood)
-  .patch("/", patchIdFood)
-  .delete("/", deleteIdFood);
+  .get("/:id", getIdFood)
+  .patch("/:id", patchIdFood)
+  .delete("/:id", deleteIdFood);
 
 export default foodRouter;

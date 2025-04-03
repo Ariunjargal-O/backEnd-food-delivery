@@ -6,18 +6,15 @@ export const createFood = async (req: Request, res: Response) => {
     const created = await Food.create(req.body);
     res.json({ success: true, food: created });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to create food" });
-  }
-};
+    res.status(500).json({ success: false, message: error.message })
+};}
 
 export const getAllFood = async (_req: Request, res: Response) => {
   try {
     const allFood = await Food.find();
     res.json(allFood);
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to fetch food items" });
+    res.status(500).json({ success: false, message: "Failed to fetch food items" });
   }
 };
 

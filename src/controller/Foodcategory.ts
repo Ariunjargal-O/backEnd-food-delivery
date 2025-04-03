@@ -6,7 +6,7 @@ export const createFoodcategory = async (req: Request, res: Response) => {
     const createdFCategory = await FoodCategory.create(req.body);
     res.json({ success: true, foodcategory: createdFCategory });
   } catch (error) {
-    res.status(200).json("Haven't food category");
+    res.status(404).json("Haven't food category");
   }
 };
 
@@ -15,7 +15,7 @@ export const getAllFoodcategory = async (_req: Request, res: Response) => {
     const allFood = await FoodCategory.find();
     res.json(allFood);
   } catch (error) {
-    res.status(200).json("Haven't food category");
+    res.status(404).json("Haven't food category");
   }
 };
 
@@ -25,7 +25,7 @@ export const getIdFoodcategory = async (req: Request, res: Response) => {
     const oneFood = await FoodCategory.findById(id);
     res.json(oneFood);
   } catch (error) {
-    res.status(200).json("Haven't food category");
+    res.status(404).json("Haven't food category");
   }
 };
 
@@ -35,7 +35,7 @@ export const patchIdFoodcategory = async (req: Request, res: Response) => {
     const upfood = await FoodCategory.findById(id);
     res.json({ success: true, update: upfood });
   } catch (error) {
-    res.status(200).json("Haven't food category");
+    res.status(404).json("Haven't food category");
   }
 };
 
@@ -45,7 +45,25 @@ export const deleteIdFoodcategory = async (req: Request, res: Response) => {
     const delfood = await FoodCategory.findById(id);
     res.json({ success: true, update: delfood });
   } catch (error) {
-    res.status(200).json("Haven't food category");
+    res.status(404).json("Haven't food category");
+  }
+};
+
+export const getCategoryWithFoods = async (req: Request, res: Response) => {
+  try {
+    const categories = await FoodCategory.aggregate([
+      {
+        $lookup: {
+          from: "foods",
+          localField: "_id",
+          foreignField: "categoryId",
+          as: "foods",
+        },
+      },
+    ]);
+    res.json({ success: true, categories });
+  } catch (error) {
+    res.status(404).json({ success: true, error: error.message });
   }
 };
 

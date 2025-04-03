@@ -18,6 +18,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "cloudinary": "^2.6.0",
     "dotenv": "^16.4.7",
     "env": "^0.0.2",
     "mongodb": "^6.15.0",
