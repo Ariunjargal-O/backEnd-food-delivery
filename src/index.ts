@@ -19,8 +19,7 @@ app.use("/food-orders", foodOrderRouter);
 app.use("/users", userRooter);
 // app.use("/food", foodRouterDeleteId);
 
-app.get("/", (req, res)=> {
-  // console.log(req, count++);
+app.get("/", (_req, res)=> {
   res.json("Welcome to food delivery Db")
 })
 
