@@ -28,8 +28,11 @@ app.use("/food-categories", Foodcategory_1.default);
 app.use("/food-orders", FoodOrder_1.default);
 app.use("/users", User_1.default);
 // app.use("/food", foodRouterDeleteId);
+app.get("/", (_req, res) => {
+    res.json("Welcome to food delivery Db");
+});
 const connection = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield mongoose_1.default.connect("");
+    yield mongoose_1.default.connect(process.env.MONGODB_URI);
     console.log("Datebase connected");
 });
 const MONGODB_URI = process.env.MONGODB_URI;

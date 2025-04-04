@@ -12,21 +12,18 @@ const app = express();
 const port = 8000;
 app.use(express.json());
 
-
 app.use("/foods", foodRouter);
 app.use("/food-categories", foodCategoryRouter);
 app.use("/food-orders", foodOrderRouter);
 app.use("/users", userRooter);
 // app.use("/food", foodRouterDeleteId);
 
-app.get("/", (_req, res)=> {
-  res.json("Welcome to food delivery Db")
-})
+app.get("/", (_req, res) => {
+  res.json("Welcome to food delivery Db");
+});
 
 const connection = async () => {
-  await mongoose.connect(
- MONGODB_URI
-  );
+  await mongoose.connect(process.env.MONGODB_URI);
   console.log("Datebase connected");
 };
 
