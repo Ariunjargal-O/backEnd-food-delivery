@@ -1,16 +1,14 @@
 import express from "express";
-import {
-  createFoodOrder,
-  getAllFoodOrder,
-  getIdFoodOrder,
-  patchIdFoodOrder,
-} from "../controller/FoodOrder";
+
+import { createUser, login } from "../controller/User";
 
 const userRooter = express.Router();
 userRooter
-  .post("/", createFoodOrder)
-  .get("/", getAllFoodOrder)
-  .get("/:id", getIdFoodOrder)
-  .patch("/:id", patchIdFoodOrder);
+  .post("/create", createUser)
+  .post("/login", login)
+  
+  // .get("/", getAllFoodOrder)
+  // .get("/:id", getIdFoodOrder)
+  // .patch("/:id", patchIdFoodOrder);
 
 export default userRooter;
