@@ -9,6 +9,7 @@ const FoodOrderSchema = new mongoose_1.default.Schema({
     totalprice: { type: Number, required: true },
     user: { type: String, required: true },
     totalPrice: { type: String, required: true },
+    role: String,
 }, {
     timestamps: true,
 });

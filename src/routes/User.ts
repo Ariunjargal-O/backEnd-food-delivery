@@ -4,7 +4,7 @@ import { createUser, login } from "../controller/User";
 
 const userRooter = express.Router();
 userRooter
-  .post("/create", createUser)
+  .post("/register", createUser)
   .post("/login", login)
   
   // .get("/", getAllFoodOrder)

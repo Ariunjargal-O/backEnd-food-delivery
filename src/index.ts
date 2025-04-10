@@ -1,10 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
 import foodRouter from "./routes/Food";
 import foodCategoryRouter from "./routes/Foodcategory";
 import foodOrderRouter from "./routes/FoodOrder";
 import userRooter from "./routes/User";
+import { connection } from "./utils/connection";
 
 dotenv.config();
 
@@ -22,12 +22,6 @@ app.get("/", (_req, res) => {
   res.json("Welcome to food delivery Db sdf");
 });
 
-const connection = async () => {
-  await mongoose.connect(process.env.MONGODB_URI);
-  console.log("Datebase connected");
-};
-
-const MONGODB_URI = process.env.MONGODB_URI;
 app.listen(port, async () => {
   await connection();
   return console.log(`Express is listening at http://localhost:${port}`);

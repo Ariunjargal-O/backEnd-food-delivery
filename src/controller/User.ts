@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../schema/User";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const SALT_ROUND = 12;
 export const createUser = async (req: Request, res: Response) => {
@@ -11,7 +12,7 @@ export const createUser = async (req: Request, res: Response) => {
 
   try {
     const createdUser = await User.create({ ...req.body, password: hash });
-    res.json({ success: true });
+    res.json({ success: true, createdUser });
   } catch (error) {
     if (error.code == 11000) {
       res
@@ -24,7 +25,7 @@ export const createUser = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email: email });
+  const user = await User.findById({ email: email });
   if (!user)
     res
       .status(400)
@@ -36,7 +37,15 @@ export const login = async (req: Request, res: Response) => {
       .status(401)
       .json({ success: false, error: "User and Password is wrong" });
   }
+
+  const token = jwt.sign(
+    {user}, process.env.ACCESS_TOKEN_SECRET_KEY,
+    { expiresIn: '1h' });
 };
+
+// var jwt = require("jsonwebtoken");
+// var token = jwt.sign({ foo: "bar" }, "shhhhh");
+
 //    res.status(404).json("Haven't food category");
 
 //   .post("/", createFoodOrder)

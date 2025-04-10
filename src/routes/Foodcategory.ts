@@ -7,11 +7,12 @@ import {
   getIdFoodcategory,
   patchIdFoodcategory,
 } from "../controller/Foodcategory";
+import { checkToken } from "../middleware/_check-token";
 
 const foodCategoryRouter = express.Router();
 foodCategoryRouter
-  .get("/with-foods", getCategoryWithFoods) // :id-iin ard bh ysgui.
-  .post("/", createFoodcategory)
+  .get("/with-foods",checkToken, getCategoryWithFoods) // :id-iin ard bh ysgui.
+  .post("/",checkToken, createFoodcategory)
   .get("/", getAllFoodcategory)
   .get("/:id", getIdFoodcategory)
   .patch("/:id", patchIdFoodcategory)

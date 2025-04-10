@@ -32,7 +32,7 @@ export const getIdFoodcategory = async (req: Request, res: Response) => {
 export const patchIdFoodcategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const upfood = await FoodCategory.findById(id);
+    const upfood = await FoodCategory.findByIdAndUpdate(id);
     res.json({ success: true, update: upfood });
   } catch (error) {
     res.status(404).json("Haven't food category");
@@ -42,7 +42,7 @@ export const patchIdFoodcategory = async (req: Request, res: Response) => {
 export const deleteIdFoodcategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const delfood = await FoodCategory.findById(id);
+    const delfood = await FoodCategory.findByIdAndDelete(id);
     res.json({ success: true, update: delfood });
   } catch (error) {
     res.status(404).json("Haven't food category");
