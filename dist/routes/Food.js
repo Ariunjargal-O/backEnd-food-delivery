@@ -5,9 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const Food_1 = require("../controller/Food");
+const _check_token_1 = require("../middleware/_check-token");
 const foodRouter = express_1.default.Router();
 foodRouter
-    .post("/", Food_1.createFood)
+    .post("/", _check_token_1.checkToken, Food_1.createFood)
     .get("/", Food_1.getAllFood)
     .get("/:id", Food_1.getIdFood)
     .patch("/:id", Food_1.patchIdFood)

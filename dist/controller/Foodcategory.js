@@ -45,7 +45,7 @@ exports.getIdFoodcategory = getIdFoodcategory;
 const patchIdFoodcategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const upfood = yield FoodCategory_1.FoodCategory.findById(id);
+        const upfood = yield FoodCategory_1.FoodCategory.findByIdAndUpdate(id);
         res.json({ success: true, update: upfood });
     }
     catch (error) {
@@ -56,7 +56,7 @@ exports.patchIdFoodcategory = patchIdFoodcategory;
 const deleteIdFoodcategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const delfood = yield FoodCategory_1.FoodCategory.findById(id);
+        const delfood = yield FoodCategory_1.FoodCategory.findByIdAndDelete(id);
         res.json({ success: true, update: delfood });
     }
     catch (error) {

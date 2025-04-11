@@ -18,25 +18,28 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const SALT_ROUND = 12;
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
-    const salt = bcrypt_1.default.genSaltSync(SALT_ROUND);
-    const hash = bcrypt_1.default.hashSync(req.body.password, salt);
     try {
+        console.log(req);
+        const salt = bcrypt_1.default.genSaltSync(SALT_ROUND);
+        const hash = bcrypt_1.default.hashSync(req.body.password, salt);
         const createdUser = yield User_1.User.create(Object.assign(Object.assign({}, req.body), { password: hash }));
-        res.json({ success: true });
+        res.json({ success: true, createdUser });
     }
     catch (error) {
-        if (error.code == 11000) {
-            res
-                .status(400)
-                .json({ succes: false, error: "User and Password is wrong" });
-        }
+        console.log(error);
+        // if (error.code == 11000) {
+        //   res
+        //     .status(400)
+        //     .json({ succes: false, error: "User and Password is wrong" });
+        //   return;
+        // }
+        res.send({ error });
     }
 });
 exports.createUser = createUser;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const user = yield User_1.User.findOne({ email: email });
+    const user = yield User_1.User.findById({ email: email });
     if (!user)
         res
             .status(400)
@@ -47,7 +50,9 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             .status(401)
             .json({ success: false, error: "User and Password is wrong" });
     }
-    const token = jsonwebtoken_1.default.sign({ user }, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' });
+    const token = jsonwebtoken_1.default.sign({ user }, process.env.ACCESS_TOKEN_SECRET_KEY, {
+        expiresIn: "1h",
+    });
 });
 exports.login = login;
 // var jwt = require("jsonwebtoken");

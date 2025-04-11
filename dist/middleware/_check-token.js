@@ -12,11 +12,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connection = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const connection = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield mongoose_1.default.connect(process.env.MONGODB_URI);
-    console.log("Datebase connected");
+exports.checkToken = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const checkToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.headers["authorization"]) {
+            res.status(401).json({ success: false, msg: "Unauthrization" });
+            return;
+        }
+        const [_, token] = req.headers["authorization"].split("");
+        const decode = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+        if (decode.user.role != "ADMIN") {
+            res.status(401).json({ success: false, error: "Unauthorizition" });
+        }
+        next();
+    }
+    catch (error) {
+        res.status(401).json({ success: false, msg: error.massage });
+    }
 });
-exports.connection = connection;
-//# sourceMappingURL=connection.js.map
+exports.checkToken = checkToken;
+//# sourceMappingURL=_check-token.js.map
