@@ -6,7 +6,7 @@ export const createFoodOrder = async (req: Request, res: Response) => {
     const createdFCategory = await FoodOrder.create(req.body);
     res.json({ success: true, foodcategory: createdFCategory });
   } catch (error) {
-    res.status(200).json("Haven't food order");
+    res.status(404).json("Haven't food order");
   }
 };
 
@@ -15,7 +15,7 @@ export const getAllFoodOrder = async (_req: Request, res: Response) => {
     const allFood = await FoodOrder.find();
     res.json(allFood);
   } catch (error) {
-    res.status(200).json("Haven't food order");
+    res.status(404).json("Haven't food order");
   }
 };
 
@@ -26,7 +26,7 @@ export const getIdFoodOrder = async (req: Request, res: Response) => {
 
     res.json(oneFood);
   } catch (error) {
-    res.status(200).json("Haven't food order");
+    res.status(404).json("Haven't food order");
   }
 };
 
@@ -36,7 +36,32 @@ export const patchIdFoodOrder = async (req: Request, res: Response) => {
     const oneFood = await FoodOrder.findByIdAndUpdate(id);
     res.json(oneFood);
   } catch (error) {
-    res.status(200).json("Haven't food order");
+    res.status(404).json("Haven't food order");
+  }
+};
+
+export const getOrderWithUser = async (req: Request, res: Response) => {
+  try {
+    const categories = await FoodOrder.aggregate([
+      {
+        $lookup: {
+          from: "users",  
+          localField: "_id",
+          foreignField: "userID",
+          as: "users",
+        },
+      },
+    ]);
+
+    // * from: The target collection.
+    // * localField: The local join field.
+    // * foreignField: The target join field.
+    // * as: The name for the results.
+    // * pipeline: Optional pipeline to run on the foreign collection.
+    // * let: Optional variables to use in the pipeline field stages.
+    res.json({ success: true, categories });
+  } catch (error) {
+    res.status(404).json({ success: true, error: error.message });
   }
 };
 

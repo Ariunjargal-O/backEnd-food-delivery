@@ -16,6 +16,7 @@ exports.login = exports.createUser = void 0;
 const User_1 = require("../schema/User");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const jwt_decode_1 = require("jwt-decode");
 const SALT_ROUND = 12;
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -27,19 +28,19 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         console.log(error);
-        // if (error.code == 11000) {
-        //   res
-        //     .status(400)
-        //     .json({ succes: false, error: "User and Password is wrong" });
-        //   return;
-        // }
+        if (error.code == 11000) {
+            res
+                .status(400)
+                .json({ succes: false, error: "User and Password is wrong" });
+            return;
+        }
         res.send({ error });
     }
 });
 exports.createUser = createUser;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const user = yield User_1.User.findById({ email: email });
+    const user = yield User_1.User.findOne({ email: email });
     if (!user)
         res
             .status(400)
@@ -53,6 +54,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = jsonwebtoken_1.default.sign({ user }, process.env.ACCESS_TOKEN_SECRET_KEY, {
         expiresIn: "1h",
     });
+    const decoded = (0, jwt_decode_1.jwtDecode)(token);
+    // verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 });
 exports.login = login;
 // var jwt = require("jsonwebtoken");
