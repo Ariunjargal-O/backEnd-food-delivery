@@ -21,7 +21,7 @@ app.use("/users", userRooter);
 // app.use("/food", foodRouterDeleteId);
 
 app.get("/", (_req, res) => {
-  res.json("Welcome to food delivery Db sdf");
+  res.json("Welcome to food delivery DB");
 });
 
 app.listen(port, async () => {

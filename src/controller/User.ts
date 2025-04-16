@@ -49,10 +49,10 @@ export const login = async (req: Request, res: Response) => {
     expiresIn: "1h",
   });
 
-  const decoded = jwtDecode(token);
-console.log(decoded)
-  res.json({ token });
 
+  const decoded = jwtDecode(token)
+  
+  
   // verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 };
 

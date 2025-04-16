@@ -3,9 +3,10 @@ import mongoose from "mongoose";
 const FoodOrderSchema = new mongoose.Schema(
   {
     totalprice: { type: Number, required: true },
-    user: { type: String, required: true },
-    totalPrice: { type: String, required: true },
-    status:String
+    users: { type: String, required: true },
+    foodOrderItems: {type:String},
+    foodOrderStatus: { type: String, enum: [ "Pending","Delivered", "Cancelled"], default:"Pending" },
+    deliveryAddress:{ type: String},
   },
   {
     timestamps: true,
