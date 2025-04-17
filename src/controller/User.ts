@@ -30,43 +30,84 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email: email });
-  if (!user)
-    res
-      .status(400)
-      .json({ success: false, error: "User and Password is wrong" });
+    // Find user by email
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      res
+        .status(400)
+        .json({ success: false, error: "User and Password is wrong" });
+      return;
+    }
 
-  const isCompare = bcrypt.compareSync(password, user.password);
-  if (!isCompare) {
-    res
-      .status(401)
-      .json({ success: false, error: "User and Password is wrong" });
+
+    const isCompare = bcrypt.compareSync(password, user.password);
+    if (!isCompare) {
+      res
+        .status(401)
+        .json({ success: false, error: "User and Password is wrong" });
+      return;
+    }
+
+    
+    const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
+
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ success: false, error: "Server error" });
   }
-
-  const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET_KEY, {
-    expiresIn: "1h",
-  });
-
-
-  const decoded = jwtDecode(token)
-  
-  
-  // verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 };
 
-// var jwt = require("jsonwebtoken");
-// var token = jwt.sign({ foo: "bar" }, "shhhhh");
+// export const login = async (req: Request, res: Response) => {
+//   const { email, password } = req.body;
 
-//    res.status(404).json("Haven't food category");
+//   const user = await User.findOne({ email: email });
+//   if (!user)
+//     res
+//       .status(400)
+//       .json({ success: false, error: "User and Password is wrong" });
 
-//   .post("/", createFoodOrder)
-//   .get("/", getAllFoodOrder)
-//   .get("/:id", getIdFoodOrder)
-//   .patch("/:id", patchIdFoodOrder);
+//   const isCompare = bcrypt.compareSync(password, user.password);
+//   if (!isCompare) {
+//     res
+//       .status(401)
+//       .json({ success: false, error: "User and Password is wrong" });
+//   }
 
-// app.post("/user", async (req, res) => {
-//     const createdUser = await User.create(req.body);
-//     res.json({ success: true, createdUser: createdUser });
+//   const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET_KEY, {
+//     expiresIn: "1h",
 //   });
+
+//   const decoded = jwtDecode(token)
+
+//   // verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+// };
+
+// // var jwt = require("jsonwebtoken");
+// // var token = jwt.sign({ foo: "bar" }, "shhhhh");
+
+// //    res.status(404).json("Haven't food category");
+
+// //   .post("/", createFoodOrder)
+// //   .get("/", getAllFoodOrder)
+// //   .get("/:id", getIdFoodOrder)
+// //   .patch("/:id", patchIdFoodOrder);
+
+// // app.post("/user", async (req, res) => {
+// //     const createdUser = await User.create(req.body);
+// //     res.json({ success: true, createdUser: createdUser });
+// //   });

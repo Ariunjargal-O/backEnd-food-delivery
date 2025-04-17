@@ -9,14 +9,21 @@ export const checkToken = async (req: Request, res: Response, next) => {
       return;
     }
 
-    const [_, token] = req.headers["authorization"].split("");
+const [_, authToken] = req.headers["authorization"].split(" ");
 
-    const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+const token = authToken;
+const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY) as { user: { role: string } };
 
-if(decode.user.role !="ADMIN"){
-    res.status(401).json({success:false, error:"Unauthorizition"})
+if (decode.user.role !== "ADMIN") {
+    res.status(401).json({ success: false, error: "Unauthorizition" });
+    return;
 }
 
+const user = decode.user;
+
+const newToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET_KEY, {
+      expiresIn: "1h",
+    });
     next();
   } catch (error) {
     res.status(401).json({ success: false, msg: error.massage });
